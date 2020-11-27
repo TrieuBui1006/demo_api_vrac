@@ -18,7 +18,10 @@ exports.userById = (req, res, next, id) => {
 exports.read = (req, res) => {
   req.profile.hashed_password = undefined
   req.profile.salt = undefined
-  return res.json(req.profile)
+
+  const {role, history, _id, name, email, createdAt, updatedAt, __v} = req.profile
+  const token = req.cookies.t
+  return res.json({token, user: {role, history, _id, name, email, createdAt, updatedAt, __v}})
 }
 
 // update user
