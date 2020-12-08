@@ -19,8 +19,6 @@ exports.read = (req, res) => {
   req.profile.hashed_password = undefined
   req.profile.salt = undefined
 
-  console.log(req.headers.authorization)
-
   const {role, history, _id, name, email, createdAt, updatedAt, __v} = req.profile
   const Authtoken = req.headers.authorization.split(' ')
   const token = Authtoken[1]
