@@ -18,6 +18,17 @@ const CartItem = mongoose.model('CartItem', CartItemSchema)
 const OrderSchema = new mongoose.Schema(
   {
     products: [CartItemSchema],
+    status: {
+        type: String,
+        default: 'Not processed',
+        enum: [
+          'Not processed',
+          'Processing',
+          'Shipped',
+          'Delivered',
+          'Cancelled',
+        ], // enum means string objects
+      },
     user: { type: ObjectId, ref: 'User' },
   },
   { timestamps: true }
