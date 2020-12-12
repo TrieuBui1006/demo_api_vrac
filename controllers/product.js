@@ -79,7 +79,7 @@ exports.update = async (req, res, next) => {
 
   if (!name) {
     return res.status(400).json({
-      error: 'Author must have name',
+      error: 'Product must have name',
     })
   }
   if (!exchangeRatio) {
