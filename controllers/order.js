@@ -2,6 +2,7 @@ const { Order, CartItem } = require('../models/order')
 const User = require('../models/user')
 const Dechet = require('../models/dechet')
 const { errorHandler } = require('../helpers/dbErrorHandler')
+const {calculByCategory} = require('../helpers/calculDechetByCategory')
 
 exports.orderById = (req, res, next, id) => {
     Order.findById(id)
@@ -23,14 +24,25 @@ exports.create = async (req, res) => {
   const order = new Order(req.body.order)
   
   // create order
-  try {
-    const data =  await order.save()
-
-    // add order to user history
     try {
+        const data = await order.save()
+
+        // calcule dechet evite 
+        const dechetInit = {
+            order: data._id,
+            user: req.profile._id
+        }
+
+        dechetInit.dechetByCategory = await calculByCategory(data)
+
+        const dechetSave = new Dechet(dechetInit)
+
+        const dechet = await dechetSave.save()
+
+        // update user history
         let history=[]
 
-        data.products.foreach((product) => {
+        data.products.forEach((product) => {
             history.push({
                 _id: product._id,
                 name: product.name,
@@ -40,55 +52,19 @@ exports.create = async (req, res) => {
             })
         })
 
-        await User.findOneAndUpdate(
+        const updateUser = await User.findOneAndUpdate(
             { _id: req.profile._id },
             { $push: { history: history } },
             { new: true }
         )
+
+        res.json({data, dechet, updateUser})
+        
     } catch (error) {
         return res.status(400).json({
-            error: 'Could not update user purchase history',
+            error: 'Could not save order',
         })
     }
-
-    // calcule dechet evite 
-    try {
-        const dechetInit = {
-            order: data._id,
-            user: req.profile
-        }
-        let dechetByCategory = []
-        let arrTemp
-        
-        data.products.foreach(product => {
-            arrTemp.push({
-                category: product.category,
-                amount: product.exchangeRatio*product.masse
-            })
-        })
-
-        dechetByCategory = Array.from(arrTemp.reduce(
-            (m, {category, amount}) => m.set(category, (m.get(category) || 0) + amount), new Map
-          ), ([category, amount]) => ({category, amount}));
-
-        dechetInit.dechetByCategory = dechetByCategory
-    
-        const dechetSave = new Dechet(dechetInit)
-
-        const dechet = await dechetSave.save()
-
-        res.json({
-            order: data,
-            dechet: dechet
-        })
-        
-    } catch (error) {
-        return res.status(400).json({ error: errorHandler(error) })
-    }
-
-  } catch (error) {
-    return res.status(400).json({ error: errorHandler(error) })
-  }
 }
 
 exports.listOrders = (req, res) => {

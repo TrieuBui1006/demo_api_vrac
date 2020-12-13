@@ -1,4 +1,6 @@
 const User = require('../models/user')
+const {Order}  = require('../models/order')
+const Dechet = require('../models/dechet')
 
 // Find user by id
 exports.userById = (req, res, next, id) => {
@@ -68,3 +70,31 @@ exports.update = (req, res) => {
   })
 }
 
+exports.purchaseHistory = (req, res) => {
+  Order.find({ user: req.profile._id })
+    .populate('user', '_id name')
+    .sort({ createdAt: 'desc' })
+    .exec((err, orders) => {
+      if (err) {
+        return res.status(400).json({
+          error: errorHandler(err),
+        })
+      }
+      res.json(orders)
+    })
+}
+
+exports.dechetHistory = (req, res) => {
+  Dechet.find({ user: req.profile._id })
+    .populate('user', '_id name')
+    .populate('dechetByCategory.category', 'name')
+    .sort({ createdAt: 'desc' })
+    .exec((err, orders) => {
+      if (err) {
+        return res.status(400).json({
+          error: errorHandler(err),
+        })
+      }
+      res.json(orders)
+    })
+}
