@@ -12,6 +12,6 @@ exports.calculByCategory = async (data) => {
         dechetByCategory = Array.from(arrTemp.reduce(
             (m, {category, amount}) => m.set(category, (m.get(category) || 0) + amount), new Map
         ), ([category, amount]) => ({category, amount}));
-    
+        
     return dechetByCategory
 }

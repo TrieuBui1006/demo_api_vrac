@@ -1,6 +1,6 @@
 const { Order, CartItem } = require('../models/order')
 const User = require('../models/user')
-const Dechet = require('../models/dechet')
+const {Dechet} = require('../models/dechet')
 const { errorHandler } = require('../helpers/dbErrorHandler')
 const {calculByCategory} = require('../helpers/calculDechetByCategory')
 
@@ -19,10 +19,8 @@ exports.orderById = (req, res, next, id) => {
 }
 
 exports.create = async (req, res) => {
-  // console.log('CREATE ORDER', req.body)
   req.body.order.user = req.profile
   const order = new Order(req.body.order)
-  
   // create order
     try {
         const data = await order.save()
@@ -36,7 +34,7 @@ exports.create = async (req, res) => {
         dechetInit.dechetByCategory = await calculByCategory(data)
 
         const dechetSave = new Dechet(dechetInit)
-
+        
         const dechet = await dechetSave.save()
 
         // update user history
