@@ -71,7 +71,7 @@ exports.create = async (req, res) => {
   }
 }
 
-// update author
+// update product
 exports.update = async (req, res, next) => {
   const { name, description, exchangeRatio, category } = req.body
 

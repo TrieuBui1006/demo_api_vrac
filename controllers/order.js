@@ -47,7 +47,7 @@ exports.create = async (req, res) => {
                 _id: product._id,
                 name: product.name,
                 exchangeRatio: product.exchangeRatio,
-                masse: product.masse,
+                weight: product.weight,
                 orderId: data._id
             })
         })

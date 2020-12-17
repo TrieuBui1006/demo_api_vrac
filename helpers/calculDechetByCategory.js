@@ -5,7 +5,7 @@ exports.calculByCategory = async (data) => {
         data.products.forEach(product => {
             arrTemp.push({
                 category: product.category,
-                amount: product.exchangeRatio*product.masse
+                amount: product.exchangeRatio*product.weight
             })
         })
 

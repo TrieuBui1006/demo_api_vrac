@@ -7,7 +7,7 @@ const CartItemSchema = new mongoose.Schema(
     product: { type: ObjectId, ref: 'Product' },
     name: String,
     exchangeRatio: Number,
-    masse: Number,
+    weight: Number,
     category: {type: ObjectId, ref: 'Category'}
   },
   { timestamps: true }

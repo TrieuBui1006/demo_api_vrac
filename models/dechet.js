@@ -2,21 +2,23 @@ const mongoose = require('mongoose')
 
 const { ObjectId } = mongoose.Schema
 
-const dechetByCategorySchema = new mongoose.Schema(
+const DechetByCategorySchema = new mongoose.Schema(
     {
       category: {type: ObjectId, ref: 'Category'},
       amount: Number
     },
     { timestamps: true }
-  )
+)
 
-const dechetSchema = new mongoose.Schema(
+const DechetByCategory = mongoose.model('DechetByCategory', DechetByCategorySchema)
+
+const DechetSchema = new mongoose.Schema(
   {
     order: {
         type: ObjectId,
         ref: 'Order',
     },
-    dechetByCategory: [dechetByCategorySchema],
+    dechetByCategory: [DechetByCategorySchema],
     user: {
         type: ObjectId,
         ref: 'User'
@@ -25,4 +27,6 @@ const dechetSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-module.exports = mongoose.model('Dechet', dechetSchema)
+const Dechet = mongoose.model('Dechet', DechetSchema)
+
+module.exports = { Dechet, DechetByCategory }

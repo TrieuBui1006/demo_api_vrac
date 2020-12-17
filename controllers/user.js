@@ -1,6 +1,6 @@
 const User = require('../models/user')
 const {Order}  = require('../models/order')
-const Dechet = require('../models/dechet')
+const {Dechet} = require('../models/dechet')
 
 // Find user by id
 exports.userById = (req, res, next, id) => {
