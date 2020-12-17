@@ -70,6 +70,7 @@ exports.create = async (req, res) => {
 exports.listOrders = (req, res) => {
   Order.find()
     .populate('user', '_id name')
+    .populate('products.category', 'name')
     .sort('-create')
     .exec((err, orders) => {
       if (err) {
