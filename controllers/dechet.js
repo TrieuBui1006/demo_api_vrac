@@ -20,7 +20,6 @@ exports.dechetByOrderId = (req, res) => {
     const queryParam = {}
     queryParam['order'] = req.order._id
     Dechet.find(queryParam)
-        .populate('user', 'name email')
         .populate('dechetByCategory.category', 'name')
         .exec((err, dechet) => {
         if (err || !dechet) {
