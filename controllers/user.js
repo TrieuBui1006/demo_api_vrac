@@ -1,4 +1,6 @@
 const User = require('../models/user')
+const Category = require('../models/category')
+const Product = require('../models/product')
 const {Order}  = require('../models/order')
 const {Dechet} = require('../models/dechet')
 
@@ -97,4 +99,24 @@ exports.dechetHistory = (req, res) => {
       }
       res.json(orders)
     })
+}
+
+exports.stats = async (req, res) => {
+  try {
+    const numberOfUser = await User.find().count()
+    const numberOfCategory = await Category.find().count()
+    const numberOfProduct = await Product.find().count()
+    const numberOfOrder = await Order.find().count()
+
+    res.json({
+      numberOfUser: numberOfUser,
+      numberOfCategory: numberOfCategory,
+      numberOfProduct: numberOfProduct,
+      numberOfOrder: numberOfOrder
+    })
+  } catch (error) {
+    return res.status(400).json({
+      error: 'cannot get stats!'
+    })
+  }
 }

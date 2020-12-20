@@ -7,7 +7,8 @@ const {
   read,
   update,
   purchaseHistory,
-  dechetHistory
+  dechetHistory,
+  stats
 } = require('../controllers/user')
 
 router.get('/secret/:userId', requireSignin, isAuth, isAdmin, (req, res) => {
@@ -18,6 +19,8 @@ router.get('/secret/:userId', requireSignin, isAuth, isAdmin, (req, res) => {
 
 router.get('/orders/by/user/:userId', requireSignin, isAuth, purchaseHistory)
 router.get('/dechets/by/user/:userId', requireSignin, isAuth, dechetHistory)
+
+router.get('/admin/stats/:userId', requireSignin, isAuth, isAdmin, stats)
 
 router.get('/user/:userId', requireSignin, isAuth, read)
 router.put('/user/:userId', requireSignin, isAuth, update)
