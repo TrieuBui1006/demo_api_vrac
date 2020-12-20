@@ -109,10 +109,10 @@ exports.stats = async (req, res) => {
     const numberOfOrder = await Order.find().count()
 
     res.json({
-      numberOfUser: numberOfUser,
-      numberOfCategory: numberOfCategory,
-      numberOfProduct: numberOfProduct,
-      numberOfOrder: numberOfOrder
+      numberOfUsers: numberOfUser,
+      numberOfCategories: numberOfCategory,
+      numberOfProducts: numberOfProduct,
+      numberOfOrders: numberOfOrder
     })
   } catch (error) {
     return res.status(400).json({
