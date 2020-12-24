@@ -75,6 +75,7 @@ exports.update = (req, res) => {
 exports.purchaseHistory = (req, res) => {
   Order.find({ user: req.profile._id })
     .populate('user', '_id name')
+    .populate('products.category', 'name')
     .sort({ createdAt: 'desc' })
     .exec((err, orders) => {
       if (err) {
