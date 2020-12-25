@@ -3,6 +3,7 @@ const Category = require('../models/category')
 const Product = require('../models/product')
 const {Order}  = require('../models/order')
 const {Dechet} = require('../models/dechet')
+const {calculTotalByCategory} = require ('../helpers/calculDechetByCategory')
 
 // Find user by id
 exports.userById = (req, res, next, id) => {
@@ -92,13 +93,13 @@ exports.dechetHistory = (req, res) => {
     .populate('user', '_id name')
     .populate('dechetByCategory.category', 'name')
     .sort({ createdAt: 'desc' })
-    .exec((err, orders) => {
+    .exec((err, dechets) => {
       if (err) {
         return res.status(400).json({
           error: errorHandler(err),
         })
       }
-      res.json(orders)
+      res.json(dechets)
     })
 }
 
@@ -118,6 +119,58 @@ exports.stats = async (req, res) => {
   } catch (error) {
     return res.status(400).json({
       error: 'cannot get stats!'
+    })
+  }
+}
+
+exports.totalDechetsByUser = async (req, res) => {
+  try {
+    let dechets = await Dechet.find({ user: req.profile._id })
+    .populate('user', '_id name')
+    .populate('dechetByCategory.category', 'name')
+    .sort({ createdAt: 'desc' })
+
+    if(!dechets) {
+      return res.status(404).json({
+        error: "cannot found user's dechets !"
+      })
+    }
+
+    let totalDechets = await calculTotalByCategory(dechets)
+
+    res.json({
+      user: dechets[0].user,
+      totalDechetsByCategory: totalDechets
+    })
+
+  } catch (error) {
+    return res.status(400).json({
+      error: 'cannot get total !'
+    })
+  }
+}
+
+exports.totalDechets = async (req, res) => {
+  try {
+    let dechets = await Dechet.find()
+    .populate('dechetByCategory.category', 'name')
+    .sort({ createdAt: 'desc' })
+
+    if(!dechets) {
+      return res.status(404).json({
+        error: "cannot found user's dechets !"
+      })
+    }
+
+    let totalDechets = await calculTotalByCategory(dechets)
+
+    res.json({
+      totalDechetsByCategory: totalDechets
+    })
+
+  } catch (error) {
+    return res.status(400).json({
+      error: 'cannot get total !'
     })
   }
 }
