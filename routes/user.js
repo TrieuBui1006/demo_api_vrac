@@ -21,7 +21,7 @@ router.get('/secret/:userId', requireSignin, isAuth, isAdmin, (req, res) => {
 
 router.get('/orders/by/user/:userId', requireSignin, isAuth, purchaseHistory)
 router.get('/dechets/by/user/:userId', requireSignin, isAuth, dechetHistory)
-router.get('/dechets/total/user/:userId', requireSignin, isAuth, totalDechetsByUser)
+router.get('/dechets/total/category/user/:userId', requireSignin, isAuth, totalDechetsByUser)
 
 router.get('/admin/stats/:userId', requireSignin, isAuth, isAdmin, stats)
 router.get('/admin/total/dechetsByCategory/:userId', requireSignin, isAuth, isAdmin, totalDechets)
