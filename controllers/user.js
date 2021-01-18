@@ -3,7 +3,7 @@ const Category = require('../models/category')
 const Product = require('../models/product')
 const {Order}  = require('../models/order')
 const {Dechet} = require('../models/dechet')
-const {calculTotalByCategory} = require ('../helpers/calculDechetByCategory')
+const {calculTotalByCategory, calculTotalDechets} = require ('../helpers/calculDechetByCategory')
 
 // Find user by id
 exports.userById = (req, res, next, id) => {
@@ -101,6 +101,33 @@ exports.dechetHistory = (req, res) => {
       }
       res.json(dechets)
     })
+}
+
+exports.userStats = async (req, res) => {
+  const userId = req.profile._id
+  try {
+    const numberOfOrders = await Order.find({user: userId}).count()
+    let dechets =  await Dechet.find({ user: req.profile._id })
+
+    if(!dechets) {
+      return res.status(404).json({
+        error: "cannot found user's dechets !"
+      })
+    }
+
+    let totalDechets = await calculTotalDechets(dechets)
+
+    res.json({
+      user: dechets[0].user,
+      numberOfOrders: numberOfOrders,
+      totalDechets: totalDechets
+    })
+
+  } catch (error) {
+    return res.status(400).json({
+      error: 'cannot get user stats!'
+    })
+  }
 }
 
 exports.stats = async (req, res) => {

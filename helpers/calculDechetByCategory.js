@@ -1,5 +1,3 @@
-const category = require("../models/category")
-
 exports.calculByCategory = async (data) => {
     let dechetByCategory = []
     let arrTemp = []
@@ -36,4 +34,16 @@ exports.calculTotalByCategory = async (data) => {
     ), ([category, amount]) => ({category, amount}));
 
     return totalByCategory
+}
+
+exports.calculTotalDechets = async (data) => {
+    let totalDechets = 0
+
+    data.forEach(order => {
+        order.dechetByCategory.forEach(category => {
+                totalDechets = totalDechets + category.amount
+            })
+        })
+
+    return totalDechets
 }

@@ -9,6 +9,7 @@ const {
   purchaseHistory,
   dechetHistory,
   stats,
+  userStats,
   totalDechetsByUser,
   totalDechets
 } = require('../controllers/user')
@@ -22,6 +23,7 @@ router.get('/secret/:userId', requireSignin, isAuth, isAdmin, (req, res) => {
 router.get('/orders/by/user/:userId', requireSignin, isAuth, purchaseHistory)
 router.get('/dechets/by/user/:userId', requireSignin, isAuth, dechetHistory)
 router.get('/dechets/total/category/user/:userId', requireSignin, isAuth, totalDechetsByUser)
+router.get('/user/stats/:userId', requireSignin, isAuth, userStats)
 
 router.get('/admin/stats/:userId', requireSignin, isAuth, isAdmin, stats)
 router.get('/admin/total/dechetsByCategory/:userId', requireSignin, isAuth, isAdmin, totalDechets)
