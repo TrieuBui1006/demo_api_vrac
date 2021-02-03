@@ -76,7 +76,7 @@ exports.update = (req, res) => {
 exports.purchaseHistory = (req, res) => {
   Order.find({ user: req.profile._id })
     .populate('user', '_id name')
-    .populate('products.category', 'name')
+    .populate('products.category', 'name unit')
     .sort({ createdAt: 'desc' })
     .exec((err, orders) => {
       if (err) {
@@ -91,7 +91,7 @@ exports.purchaseHistory = (req, res) => {
 exports.dechetHistory = (req, res) => {
   Dechet.find({ user: req.profile._id })
     .populate('user', '_id name')
-    .populate('dechetByCategory.category', 'name')
+    .populate('dechetByCategory.category', 'name unit')
     .sort({ createdAt: 'desc' })
     .exec((err, dechets) => {
       if (err) {
@@ -154,7 +154,7 @@ exports.totalDechetsByUser = async (req, res) => {
   try {
     let dechets = await Dechet.find({ user: req.profile._id })
     .populate('user', '_id name')
-    .populate('dechetByCategory.category', 'name')
+    .populate('dechetByCategory.category', 'name unit')
     .sort({ createdAt: 'desc' })
 
     if(!dechets) {
@@ -180,7 +180,7 @@ exports.totalDechetsByUser = async (req, res) => {
 exports.totalDechets = async (req, res) => {
   try {
     let dechets = await Dechet.find()
-    .populate('dechetByCategory.category', 'name')
+    .populate('dechetByCategory.category', 'name unit')
     .sort({ createdAt: 'desc' })
 
     if(!dechets) {

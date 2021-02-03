@@ -37,6 +37,7 @@ exports.read = (req, res) => {
 exports.update = (req, res) => {
   const category = req.category
   category.name = req.body.name
+  category.unit = req.body.unit
   category.save((err, data) => {
     if (err) {
       res.status(400).json({

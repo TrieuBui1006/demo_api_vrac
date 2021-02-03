@@ -4,7 +4,7 @@ const { errorHandler } = require('../helpers/dbErrorHandler')
 // find dechet by Id
 exports.dechetById = (req, res, next, id) => {
     Dechet.findById(id)
-    .populate('dechetByCategory.category', 'name')
+    .populate('dechetByCategory.category', 'name unit')
     .exec((err, dechet) => {
     if (err || !dechet) {
         return res.status(400).json({
@@ -20,7 +20,7 @@ exports.dechetByOrderId = (req, res) => {
     const queryParam = {}
     queryParam['order'] = req.order._id
     Dechet.find(queryParam)
-        .populate('dechetByCategory.category', 'name')
+        .populate('dechetByCategory.category', 'name unit')
         .exec((err, dechet) => {
         if (err || !dechet) {
             return res.status(400).json({

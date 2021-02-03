@@ -9,6 +9,12 @@ const categorySchema = new mongoose.Schema(
       maxlength: 500,
       unique: true,
     },
+    unit: {
+      type: String,
+      trim: true,
+      required: true,
+      maxlength: 500,
+    }
   },
   { timestamps: true }
 )
