@@ -26,7 +26,7 @@ router.get('/dechets/total/category/user/:userId', requireSignin, isAuth, totalD
 router.get('/user/stats/:userId', requireSignin, isAuth, userStats)
 
 router.get('/admin/stats/:userId', requireSignin, isAuth, isAdmin, stats)
-router.get('/admin/total/dechetsByCategory/:userId', requireSignin, isAuth, isAdmin, totalDechets)
+router.get('/admin/dechets/total/category/admin/:userId', requireSignin, isAuth, isAdmin, totalDechets)
 
 
 router.get('/user/:userId', requireSignin, isAuth, read)

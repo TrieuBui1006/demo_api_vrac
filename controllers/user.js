@@ -107,20 +107,10 @@ exports.userStats = async (req, res) => {
   const userId = req.profile._id
   try {
     const numberOfOrders = await Order.find({user: userId}).count()
-    // let dechets =  await Dechet.find({ user: req.profile._id })
-
-    // if(!dechets) {
-    //   return res.status(404).json({
-    //     error: "cannot found user's dechets !"
-    //   })
-    // }
-
-    // let totalDechets = await calculTotalDechets(dechets)
-
+    
     res.json({
-      user: dechets[0].user,
+      user: userId,
       numberOfOrders: numberOfOrders,
-      // totalDechets: totalDechets
     })
 
   } catch (error) {
